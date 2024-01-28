@@ -291,7 +291,7 @@ export default class DB {
         screeningID: null
     }){
         if(!screeningID){
-            const errMsg = `Delete load error: wrong params (id: ${screeningID})`;
+            const errMsg = `Delete screening error: wrong params (id: ${screeningID})`;
             console.error(errMsg);
             return Promise.reject({
                 type: 'client',
@@ -299,7 +299,7 @@ export default class DB {
             });
         }
         //console.log(screeningID);
-        try {// брони уже удалены в цикле в App
+        try {// брони уже удалены в цикле в App////////////////////////////////
             await this.#dbClient.query(
                 'delete from screening where id = $1;',
                 [screeningID]

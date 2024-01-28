@@ -503,7 +503,7 @@ export default class App {
       if(movieID && hallID && datetime){
         //const screenings = await AppModel.getScreenings();
         //screenings = screenings.filter(load => screening.bookings.indexOf(load.bookingID) !== -1)
-        if(this.#screenings){
+        //if(this.#screenings){
           const newdate = new Date(datetime);
           const movies = await AppModel.getMovies();
           console.log("movies", movies);
@@ -543,7 +543,7 @@ export default class App {
             }
           }
         
-        }
+        //}
 
         
         const screeningID = crypto.randomUUID();
