@@ -555,7 +555,14 @@ export default class App {
             hallID,
             position: this.#screenings.length
           });
-
+          const halls = await AppModel.getHalls();
+          let hall_capacity;
+          for (let hall of halls){
+            if(hall.id == hallID){
+              hall_capacity = hall.capacity;
+              break;
+            }
+          }
           const  newScreening = new Screening({
             screeningID: screeningID,
             hall: hallName,
@@ -563,7 +570,8 @@ export default class App {
             dateTime: datetime,
             //name: event.target.value,
             position: this.#screenings.length,
-
+            hallLimits: hall_capacity,
+            duration: newDuration,
             onDropLoadInScreening: this.onDropLoadInScreening,
             addNotification: this.addNotification
     
