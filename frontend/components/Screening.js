@@ -327,8 +327,12 @@ export default class Screening {
     
     const h3Element_ferry = document.createElement('h2');
     h3Element_ferry.classList.add('screening__info');
-    h3Element_ferry.innerHTML = "Начало: " + this.#screeningDateTime; 
+    let scrDate = new Date(this.#screeningDateTime);
+    //scrDate.setMinutes(scrDate.getMinutes() + 180);
+    h3Element_ferry.innerHTML = "Начало: " + String(scrDate).slice(0, 15) + ", "+String(scrDate).slice(16, 21); 
     liElement.appendChild(h3Element_ferry);
+    console.log("this.#screeningDateTime", this.#screeningDateTime, typeof(this.#screeningDateTime));
+    console.log("scrDate", scrDate, typeof(scrDate));
 
 
     const innerUlElement = document.createElement('ul');
