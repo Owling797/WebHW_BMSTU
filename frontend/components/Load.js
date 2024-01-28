@@ -42,7 +42,6 @@ export default class Load {
     }
   }
 
-  // добавить сеттеры геттеры для остальных параметров?
   get bookingTicketsNumber() { return this.#bookingTicketsNumber; }
   
 
@@ -59,12 +58,12 @@ export default class Load {
     liElement.addEventListener('dragend', (evt) => evt.target.classList.remove('load_selected'));
 
 
-    const span = document.createElement('span');    //вот здесь добавлять отображение других параметров 
+    const span = document.createElement('span');  
     span.classList.add('load__name');
     span.innerHTML = this.#bookingCustomerName;
     liElement.appendChild(span);
 
-    const span_number = document.createElement('span');    //вот здесь добавлять отображение других параметров 
+    const span_number = document.createElement('span');  
     span_number.classList.add('load__number');
     span_number.innerHTML = this.#bookingTicketsNumber;
     liElement.appendChild(span_number);

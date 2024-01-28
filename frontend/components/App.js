@@ -103,7 +103,7 @@ export default class App {
     try {
 
       console.log('destination ', srcScreening.ScreeningMovie, destScreening.ScreeningMovie)
-      //проверка на одиннаковый пункт назначения
+      
       if (srcScreening.ScreeningMovie !== destScreening.ScreeningMovie){
         this.addNotification({ text: 'Не совпадают фильмы сеансов', type: 'error'});
         location.reload();
@@ -122,13 +122,6 @@ export default class App {
       console.log(screeningLimits)
 
       const CurrentLoads = destScreening.getCurrentLoads();
-      /*if ((screeningLimits['car_place'] < newCars || screeningLimits['load_place'] < newLoad) && (srcScreeningID !== destScreeningID)){
-        this.addNotification({ text: 'Не достаточно места на пароме', type: 'error'});
-        
-        location.reload();
-      }
-  
-      else{*/
         
         if (srcScreeningID !== destScreeningID) {
           
@@ -152,7 +145,7 @@ export default class App {
         
         this.addNotification({ text: `Load (ID: ${movedLoadID}) move between screenings`, type: 'success'});
       }
-    //} 
+      
     catch(err) {
       this.addNotification({ text: err.message, type: 'error'});
       console.error(err);
@@ -349,7 +342,6 @@ export default class App {
       
       const id_select_hall = localStorage.getItem('select_hall_edit_id');
       const modalInputHall = document.getElementById(id_select_hall);
-      //const modalInputCarType = addLoadModal.querySelector('#modal-select-load-car-type');
 
       //const movieID = String(modalInputMovie.options[modalInputMovie.selectedIndex].id);
       //const movieName = String(modalInputMovie.options[modalInputMovie.selectedIndex].value);
@@ -486,7 +478,7 @@ export default class App {
     const cancelHandler = () => {
       createScreeningModal.close();
       //localStorage.setItem('addBookingScrID', '');
-      //createScreeningModal.querySelector('.app-modal__input').value = ''; //возможно надо будет чтото другое обнулить
+      //createScreeningModal.querySelector('.app-modal__input').value = '';
     };
 
     const okHandler = async () =>  {
@@ -496,7 +488,6 @@ export default class App {
       
       const id_select_hall = localStorage.getItem('select_hall_id');
       const modalInputHall = document.getElementById(id_select_hall);
-      //const modalInputCarType = addLoadModal.querySelector('#modal-select-load-car-type');
 
       const movieID = String(modalInputMovie.options[modalInputMovie.selectedIndex].id);
       const movieName = String(modalInputMovie.options[modalInputMovie.selectedIndex].value);
@@ -512,41 +503,43 @@ export default class App {
       if(movieID && hallID && datetime){
         //const screenings = await AppModel.getScreenings();
         //screenings = screenings.filter(load => screening.bookings.indexOf(load.bookingID) !== -1)
-        const newdate = new Date(datetime);
-        const movies = await AppModel.getMovies();
-        console.log("movies", movies);
-        let newDuration = 0;
-        for(let movie of movies){
-          if (movie.movieID == movieID){
-            newDuration=movie.duration;
-            console.log("FOUND NEW_DURATION", newDuration);
-            break;
-          }
-        }
-        const newEnd = new Date(datetime);
-        newEnd.setMinutes(newEnd.getMinutes() + Number(newDuration))
-        console.log("SCREENING CHECK", newdate, newEnd);
-
-        for(let screening of this.#screenings){
-          if(hallName == screening.screeningHall){
-            const curdate = new Date(String(screening.screeningDateTime));
-            let curDuration = 0;
-            for(let movie of movies){
-              if (movie.name == screening.ScreeningMovie){
-                curDuration=movie.duration;
-                console.log("FOUND CUR_DURATION", curDuration);
-                break;
-              }
+        if(this.#screenings){
+          const newdate = new Date(datetime);
+          const movies = await AppModel.getMovies();
+          console.log("movies", movies);
+          let newDuration = 0;
+          for(let movie of movies){
+            if (movie.movieID == movieID){
+              newDuration=movie.duration;
+              console.log("FOUND NEW_DURATION", newDuration);
+              break;
             }
-            const curEnd = new Date(String(screening.screeningDateTime));
-            curEnd.setMinutes(curEnd.getMinutes() + Number(screening.screeningDuration) + Number(SERVICE_PAUSE))
-            console.log("TEST:", newdate, newEnd, " by cur: ", curdate, curEnd);
-            if(newdate < curEnd && newEnd > curdate || curdate < newEnd && curEnd > newdate){ // пересечение дат
-              console.log("OVERLAP");
-              cancelHandler();
-              this.addNotification({ text: "Time overlap in the hall: " + hallName, type: 'error'});
-              //location.reload();
-              return;
+          }
+          const newEnd = new Date(datetime);
+          newEnd.setMinutes(newEnd.getMinutes() + Number(newDuration))
+          console.log("SCREENING CHECK", newdate, newEnd);
+
+          for(let screening of this.#screenings){
+            if(hallName == screening.screeningHall){
+              const curdate = new Date(String(screening.screeningDateTime));
+              let curDuration = 0;
+              for(let movie of movies){
+                if (movie.name == screening.ScreeningMovie){
+                  curDuration=movie.duration;
+                  console.log("FOUND CUR_DURATION", curDuration);
+                  break;
+                }
+              }
+              const curEnd = new Date(String(screening.screeningDateTime));
+              curEnd.setMinutes(curEnd.getMinutes() + Number(screening.screeningDuration) + Number(SERVICE_PAUSE))
+              console.log("TEST:", newdate, newEnd, " by cur: ", curdate, curEnd);
+              if(newdate < curEnd && newEnd > curdate || curdate < newEnd && curEnd > newdate){ // пересечение дат
+                console.log("OVERLAP");
+                cancelHandler();
+                this.addNotification({ text: "Time overlap in the hall: " + hallName, type: 'error'});
+                //location.reload();
+                return;
+              }
             }
           }
         

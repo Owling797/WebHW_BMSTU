@@ -173,7 +173,7 @@ export default class AppModel {
         }
     }
 
-    static async updateScreening({screeningID, datetime, hallID} = {   //пока что только название и позиция, добавить остальные штуки
+    static async updateScreening({screeningID, datetime, hallID} = {   
         screeningID: null,
         datetime: null,
         hallID: null

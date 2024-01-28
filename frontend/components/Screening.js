@@ -12,8 +12,6 @@ export default class Screening {
   #screeningPosition = -1;
   #screeningCurrentFullness = 0; // увеличивается при добавлении брони
   #screeningHallLimits = 0; // равен вместимости зала
-  //#screeningCurLoad = 0;
-  //#screeningCurCars = 0;
 
   constructor({
     screeningID = null,
@@ -28,8 +26,6 @@ export default class Screening {
   }) {
     console.log("typeof movie", typeof movie);
     console.log("typeof this.#ScreeningMovie",typeof this.#ScreeningMovie);
-    //this.#screeningCurLoad = 0;
-    //this.#screeningCurCars = 0;
     this.#screeningHall = String(hall);
     this.#ScreeningMovie = String(movie);
     this.#screeningDateTime = String(dateTime);
@@ -172,15 +168,13 @@ export default class Screening {
           const updateLoadResult = await AppModel.updateLoad({ bookingID: load.bookingID, name: name, ticketsNumber : newTicketsNumber});
 
           //console.log(updateLoadResult);
-          this.addNotification({ text: updateLoadResult.message, type: 'success'});
+          //this.addNotification({ text: updateLoadResult.message, type: 'success'});
         
-          //this.addNotification({ text: 'Билеты добавлены к существующему заказу', type: 'success'});
+          this.addNotification({ text: 'Билеты добавлены к существующему заказу', type: 'success'});
           location.reload();
           return;
         }
       }
-      //const modalInputType = addLoadModal.querySelector('#modal-select-load-type');
-      //const modalInputCarType = addLoadModal.querySelector('#modal-select-load-car-type');
     }catch( err) {
       this.addNotification({ text: err.message, type: 'error'});
       console.error(err);
@@ -213,8 +207,6 @@ export default class Screening {
         position: this.#bookings.length
       });
 
-      //this.#screeningCurCars = newCars;
-      //this.#screeningCurLoad = newLoad;
       this.updateLimits();
 
       this.addNotification({ text: addLoadResult.message, type: 'success'});
@@ -308,13 +300,11 @@ export default class Screening {
 
     const h2Element_dest = document.createElement('h2');
     h2Element_dest.classList.add('screening__info');
-    //console.log("имя пункта ", this.#ScreeningMovie)
     h2Element_dest.innerHTML = "Фильм: " + this.#ScreeningMovie; 
     liElement.appendChild(h2Element_dest);
 
     const h2Element_duration = document.createElement('h2');
     h2Element_duration.classList.add('screening__info');
-    //console.log("имя пункта ", this.#ScreeningMovie)
     const hours = parseInt((Number(this.#screeningDuration) / 60))  ;
     const minutes = Number(this.#screeningDuration) % 60;
     h2Element_duration.innerHTML = "Длительность: " + String(hours) + " ч " + minutes + " мин"; 
@@ -328,7 +318,6 @@ export default class Screening {
     const h3Element_ferry = document.createElement('h2');
     h3Element_ferry.classList.add('screening__info');
     let scrDate = new Date(this.#screeningDateTime);
-    //scrDate.setMinutes(scrDate.getMinutes() + 180);
     h3Element_ferry.innerHTML = "Начало: " + String(scrDate).slice(0, 15) + ", "+String(scrDate).slice(16, 21); 
     liElement.appendChild(h3Element_ferry);
     console.log("this.#screeningDateTime", this.#screeningDateTime, typeof(this.#screeningDateTime));
@@ -348,9 +337,6 @@ export default class Screening {
       document.getElementById('modal-add-booking').showModal();
     });
     liElement.appendChild(button);
-    
-    //const current_loading = this.getCurrentLoads();
-    //console.log(this.screeningID," cur: ",current_loading)
 
     const h2Element_car = document.createElement('h2');
     h2Element_car.classList.add('screening__info');

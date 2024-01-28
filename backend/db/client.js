@@ -318,7 +318,7 @@ export default class DB {
     }
 
 
-    async addLoad({ //changed чтобы суммарно у покупателя не было больше N билетов, чтобы не превышало число мест в зале
+    async addLoad({
         bookingID, name, ticketsNumber, position=-1, screeningID
     } = {
         bookingID: null,
@@ -358,7 +358,7 @@ export default class DB {
         }
     }
 
-    async updateLoad({ // теперь тут можно изменить все параметры, но надо задать прям всё заново(
+    async updateLoad({
         bookingID, name, ticketsNumber, position
     } = {
         bookingID: null,
@@ -378,7 +378,7 @@ export default class DB {
 
         let query = null;
         const queryParams = [];
-        if(name && ticketsNumber && position >= 0){// пока что я считаю что если изменяется то всё
+        if(name && ticketsNumber && position >= 0){// если изменяется то всё
             query = 'update booking set customer_name = $1, tickets_number = $2, position = $3 where id = $4;';
             queryParams.push(name, ticketsNumber, position, bookingID);
         } else if(name && ticketsNumber){
@@ -449,7 +449,7 @@ export default class DB {
     }
 
 
-    async moveLoad({  //проверки: переброс на тот же фильм, чтобы не превышало количества мест в зале (второго тут нет)
+    async moveLoad({  
         bookingID,
         srcScreeningID,
         destScreeningID
