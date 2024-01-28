@@ -518,7 +518,7 @@ export default class App {
           const newEnd = new Date(datetime);
           newEnd.setMinutes(newEnd.getMinutes() + Number(newDuration))
           console.log("SCREENING CHECK", newdate, newEnd);
-
+          if(this.#screenings.length >1){
           for(let screening of this.#screenings){
             if(hallName == screening.screeningHall){
               const curdate = new Date(String(screening.screeningDateTime));
@@ -542,6 +542,7 @@ export default class App {
               }
             }
           }
+        }
         
         //}
 
